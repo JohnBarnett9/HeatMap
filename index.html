@@ -15,7 +15,7 @@
 		<script>
 			d3.json("global-temperature.json").then(function(data){
 				var dataset = data.monthlyVariance;
-				const width = 1000;
+				const width = 1400;
 				const height = 500;
 				const svg = d3.select("#root")
 				.append("svg")
@@ -23,19 +23,154 @@
 				.attr("height", height)
 				.attr("style", "background-color: lightgrey;");
 
+				/*
+				X Axis, works, commented to debug Y Axis
+				*/
 				//var minYear = d3.min(dataset, (d,i) => dataset[i]['year']);
 				var minYear = d3.min(dataset, (d) => d.year);
 				var maxYear = d3.max(dataset, (d) => d.year);
 				console.dir(minYear);
 
+				//variance
+				var minVariance = d3.min(dataset, (d) => d.variance);
+				var maxVariance = d3.max(dataset, (d) => d.variance);
+				console.dir(minVariance);
+				console.dir(maxVariance);
+
+
 				const xScale = d3.scaleTime()
 				.domain([minYear, maxYear])
-				.range([50, 900]);
+				.range([50, 1300]);
 
 				var xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"));
 				svg.append("g")
-				.attr("transform", "translate(50, 350)")
+				.attr("transform", "translate(50, 400)")
 				.call(xAxis);
+				
+
+				/* Y Scale, all the data is in 1 place and is not spread out
+
+				var yScale = d3.scaleTime()
+				//.domain([new Date("2019-01-01"), new Date("2020-01-01")])
+				.domain([new Date("2019-01-01"), new Date("2019-12-31")])
+				.range(50, 400);
+
+				var yAxis = d3.axisLeft(yScale)
+				.ticks(12)
+				.tickFormat(d3.timeFormat("%B"));
+				//.tickFormat(d3.format("%B"));
+
+				svg.append("g")
+				.attr("transform", "translate(100, 100)")
+				.call(yAxis);
+				*/
+
+				/*
+				Y scale based on json data
+				
+				var minMonth = d3.min(dataset, (d) => d.month);
+				var maxMonth = d3.max(dataset, (d) => d.month);
+				var yScale = d3.scaleTime()
+				//.domain([new Date("2019-01-01"), new Date("2020-01-01")])
+				.domain([minMonth, maxMonth])
+				.range(50, 400);
+
+				var yAxis = d3.axisLeft(yScale)
+				//.ticks(12)
+				.tickFormat(d3.timeFormat("%B"));
+				//.tickFormat(d3.format("%B"));
+
+				svg.append("g")
+				.attr("transform", "translate(100, 100)")
+				.call(yAxis);
+				*/
+
+				/*
+				works
+				based on
+				https://stackoverflow.com/questions/40173533/customize-the-d3-month-or-year-tick-format/40175517
+				*/
+				var yScale = d3.scaleTime()
+				//.domain([new Date("1753-01-01"), new Date("2011-12-31")])
+				//.domain([1, 12])
+				.domain([new Date("2019-01-01"), new Date("2019-12-31")])
+				.range([50, 400]);
+
+				var yAxis = d3.axisLeft(yScale)
+				.tickFormat(d3.timeFormat("%B"));
+
+				svg.append("g")
+				.attr("transform", "translate(100, 0)")
+				.call(yAxis);
+
+				//X Axis Label
+				svg.append("text")
+				.attr("x", width / 2)
+				.attr("y", height - 20)
+				.text("Year");
+
+				/*
+				//Y Axis Label
+				*/
+				svg.append("text")
+				.attr("x", 0)
+				.attr("y", 0)
+				.attr("transform", "translate(20,250) rotate(-90)")
+				.text("Month");
+				
+				/*
+				var threshold = d3.scaleThreshold()
+				.domain([-2, +2])
+				.range(["white", "pink", "red"]);
+				*/
+				/* 3 versions of blue
+				var threshold = d3.scaleThreshold()
+				.domain([-2, +2])
+				.range(d3.schemeBlues[3]);
+				*/
+				/*
+				var threshold = d3.scaleThreshold()
+				.domain([-3, -2, -1, 0, 1, 2, 3])
+				.range(d3.schemeBlues[8]);
+				*/
+				//var temp = d3.schemeBlues[8].concat(d3.schemeReds[6]);
+				var temp = d3.schemeBlues[4].concat(d3.schemeReds[5]);
+				//var temp = d3.schemeBlues[8].push(d3.schemeReds[6]);
+				console.dir(temp);
+				var threshold = d3.scaleThreshold()
+				//.domain([-3, -2, -1, 0, 1, 2, 3])
+				.domain([2.8, 3.9, 5.0, 6.1, 7.2, 8.3, 9.5, 10.6, 11.7, 12.8])
+				//.domain([-7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5])
+				//.domain([-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8]) //more blues
+				//.domain([-9, -8, -7, -6, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5]) //14
+				//.domain([-6, -4, -2, 0, 2, 4, 6, 8])
+				.range(temp);
+
+				/* does not work
+				var threshold = d3.scaleThreshold()
+				.domain([-3, -2, -1, 0, 1, 2, 3])
+				.range(d3.interpolateTurbo(8));
+				*/
+				
+				//color data rect
+				svg.selectAll("rect")
+				.data(dataset)
+				.enter()
+				.append("rect")
+				.attr("x", function(d,i){
+					//return (i * 5) + 100;
+					//+50 makes the rects start to right of Y axis
+					return xScale(d.year) + 51 + "px";
+				})
+				.attr("y", function(d, i){
+					//return  yScale(new Date(d.year + "-" + d.month + "-01"));
+					//return  yScale("2019-" + d.month + "-01") + "px";
+					return  yScale(new Date("2019-" + d.month + "-01")) + "px";
+				})
+				.attr("width", "3px")
+				.attr("height", "25px ")
+				//.attr("fill", "blue");
+				.attr("fill", function(d){ return threshold(d.variance + 8.66); });
 
 			});
 		</script>
