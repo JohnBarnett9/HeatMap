@@ -145,6 +145,57 @@
 
 				//Color Legend
 
+				//sort variance values and take leftmost
+				/**/
+				var variances = dataset.map(function(d){
+					return d.variance; //returns positive numbers also
+					//if(d.variance < 0){ return d.variance; }
+				});
+				//console.dir(variances);
+
+
+				//neg number furthest from 0, -6.976
+				var minNegVariance = Math.min(...variances);
+				console.log("minNegVariance=");
+				console.dir(minNegVariance);
+
+				//5.228
+				var maxPosVariance = Math.max(...variances);
+				console.log("maxPosVariance=");
+				console.dir(maxPosVariance);
+
+
+				//variances.sort();
+				//console.dir(variances);
+
+				//var maxNegVariance =
+				//console.dir();
+				//var minBaseTemp = 8.66-maxNegVariance;
+				//console.dir(minBaseTemp);
+				//variance scale
+				var varianceScale = d3.scaleLinear()
+				.domain([minNegVariance, maxPosVariance])
+				.range([50, 250]);
+
+
+				var varianceAxis = d3.axisBottom(varianceScale).tickFormat(d3.format("d"));
+				svg.append("g")
+				.attr("transform", "translate(50, 420)")
+				.call(varianceAxis);
+
+				//base temp axis
+				var baseTempScale = d3.scaleLinear()
+				//.domain([8.66-minNegVariance, 8.66+maxPosVariance])
+				//.domain([8.66+minNegVariance, 8.66+maxPosVariance])
+				.domain([7, 13])
+				.range([50, 250]);
+
+				var baseAxis = d3.axisBottom(baseTempScale).tickFormat(d3.format("d"));
+				svg.append("g")
+				.attr("transform", "translate(50, 440)")
+				.call(baseAxis);
+
+
 				//Title of Heat Map
 				svg.append("text")
 				.attr("x", 500)
