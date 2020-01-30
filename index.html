@@ -83,11 +83,11 @@
 				.attr("y", 0)
 				.attr("transform", "translate(20,250) rotate(-90)")
 				.text("Month");
-				
+
+				/* works*/
 				var temp = d3.schemeBlues[4].concat(d3.schemeReds[5]);
 				var threshold = d3.scaleThreshold()
-
-				.domain([2.8, 3.9, 5.0, 6.1, 7.2, 8.3, 9.5, 10.6, 11.7, 12.8])
+				.domain([2.8, 3.9, 5.0, 6.1, 7.2, 8.3, 9.5, 10.6, 11.7, 12.8]) //10
 				.range(temp);
 
 				//color data rect
@@ -112,7 +112,7 @@
 					var tooltipDiv = d3.select("#myTooltip")
 
 					tooltipDiv.transition()
-					.duration(1)
+					.duration(250)
 					.style("opacity", 1);
 
 					var monthAbbrev = d3.timeFormat("%B");
@@ -130,6 +130,8 @@
 				})
 				.on("mouseout", function(d){
 					tooltipDiv
+					.transition()
+					.duration(250)
 					.style("opacity", 0);
 				});
 
@@ -139,8 +141,22 @@
 				.attr("id", "myTooltip")
 				.text("asdf")
 				.style("opacity", 0);
+
+
 				//Color Legend
 
+				//Title of Heat Map
+				svg.append("text")
+				.attr("x", 500)
+				.attr("y", 20)
+				.text("Monthly Global Land-Surface Temperature")
+				.style("font-size", "20px");
+
+				svg.append("text")
+				.attr("x", 570)
+				.attr("y", 40)
+				.text("1753 - 2015: base temperature 8.66℃")
+				.style("font-size", "15px");
 
 			});
 		</script>
