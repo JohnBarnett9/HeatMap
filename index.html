@@ -84,14 +84,19 @@
 				.attr("transform", "translate(20,250) rotate(-90)")
 				.text("Month");
 
+				var baseTemp = [2.8, 3.9, 5.0, 6.1, 7.2, 8.3, 9.5, 10.6, 11.7, 12.8];
 				/* works*/
-				var temp = d3.schemeBlues[4].concat(d3.schemeReds[5]);
+				//var legendColors = d3.schemeBlues[4].reverse().concat(d3.schemeReds[5]);
+				var legendColors = d3.schemeBlues[5].reverse().concat(d3.schemeReds[6]);
 				var threshold = d3.scaleThreshold()
-				.domain([2.8, 3.9, 5.0, 6.1, 7.2, 8.3, 9.5, 10.6, 11.7, 12.8]) //10
-				.range(temp);
+				.domain(baseTemp) //10
+				.range(legendColors);
 
+
+				var heatGroup = svg.append("g");
 				//color data rect
-				svg.selectAll("rect")
+				//svg.selectAll("rect")
+				heatGroup.selectAll("rect")
 				.data(dataset)
 				.enter()
 				.append("rect")
@@ -134,6 +139,7 @@
 					.duration(250)
 					.style("opacity", 0);
 				});
+
 
 				//tooltip
 				var tooltipDiv = d3.select("body")
@@ -194,6 +200,55 @@
 				svg.append("g")
 				.attr("transform", "translate(50, 440)")
 				.call(baseAxis);
+
+				//color scale
+				var colorScale = d3.scaleLinear()
+				.domain([-10, 0, 10])
+				.range(['red', '#ddd', 'blue'])
+				.interpolate(d3.interpolateHcl);
+				//.interpolator(d3.interpolateRainbow());
+				//colorScale(-10);
+
+
+				/*
+				var colorAxis = d3.axisBottom(colorScale);
+				svg.append("g")
+				.attr("transform", "translate(50, 460)")
+				.call(colorAxis);
+				*/
+				var myData = baseTemp; //[-10, - -5, 0, 5, 10];
+				var legendGroup = svg.append("g");
+				console.dir(legendColors);
+
+				//svg.selectAll("rect")
+				legendGroup.selectAll("rect")
+				.data(legendColors)
+				.enter()
+				.append("rect")
+				.attr("width", 20)
+				.attr("height", 20)
+				//.attr("r", "10")
+				.attr("x", function(d,i){return (i * 20)+ 100 + "px";})
+				.attr("y", 470)
+				.attr("fill", function(d){return d;});
+				
+
+
+
+
+				//variance scale label
+				svg.append("text")
+				.attr("x", 0)
+				.attr("y", 420)
+				.text("Variance Scale");
+
+				//base temp scale label
+				svg.append("text")
+				.attr("x", 0)
+				.attr("y", 440)
+				.text("Base Temp Scale");
+
+
 
 
 				//Title of Heat Map
