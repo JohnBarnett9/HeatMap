@@ -1,7 +1,17 @@
-import {hello} from './TestImport.js';
+//import {hello} from './TestImport.js';
 //import {minYear} from './XYScale.js';
-hello();
+//hello();
 console.log("in OriginalJS.js");
+//import {width, height, svg, makeSVG} from './SVG.js';
+//import {svgStuff} from './SVG.js';
+
+//require is not defined
+//var svgStuff = require('svgStuff');
+import {svgStuff} from './SVG.js';
+
+//only works if svgStuff is default export
+//import svgStuff from './SVG.js';
+console.dir(svgStuff);
 
 //var dataset = []; //init
 d3.json("global-temperature.json")
@@ -10,9 +20,9 @@ d3.json("global-temperature.json")
 	main(dataset);
 });
 
-const width = 1400;
-const height = 500;
-var svg;
+//const width = 1400;
+//const height = 500;
+//var svg;
 var xScale;
 var yScale;
 var baseTemp = [2.8, 3.9, 5.0, 6.1, 7.2, 8.3, 9.5, 10.6, 11.7, 12.8];
@@ -21,6 +31,30 @@ var heatGroup;
 var threshold;
 var tooltipDiv;
 
+
+function main(dataset){
+	//makeSVG();
+	svgStuff.makeSVG();
+	makeXAxis(dataset);
+	makeYAxis();
+	makeAxisLabels();
+	
+	threshold = d3.scaleThreshold()
+	.domain(baseTemp) //10
+	.range(legendColors);
+
+	heatGroup = svg.append("g");
+
+	makeHeatGroup(dataset);
+
+	makeToolTip();
+
+	makeLegend(dataset);	
+
+	makeTitle();
+}
+
+/*
 function makeSVG(){
 	svg = d3.select("#root")
 	.append("svg")
@@ -29,7 +63,7 @@ function makeSVG(){
 	.attr("style", "background-color: lightgrey;");
 
 }
-
+*/
 function makeXAxis(dataset){
 	/*
 	X Axis, works, commented to debug Y Axis
@@ -274,24 +308,5 @@ function makeHeatGroup(dataset){
 
 }
 
-function main(dataset){
-	makeSVG();
-	makeXAxis(dataset);
-	makeYAxis();
-	makeAxisLabels();
-	
-	threshold = d3.scaleThreshold()
-	.domain(baseTemp) //10
-	.range(legendColors);
 
-	heatGroup = svg.append("g");
-
-	makeHeatGroup(dataset);
-
-	makeToolTip();
-
-	makeLegend(dataset);	
-
-	makeTitle();
-}
 
