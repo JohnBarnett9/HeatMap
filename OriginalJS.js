@@ -3,6 +3,9 @@ import {hello} from './TestImport.js';
 hello();
 console.log("in OriginalJS.js");
 
+import {makeXAxis, getXCoord} from './Axis.js';
+import {width, height, svg} from './SVGVariable.js';
+
 //var dataset = []; //init
 d3.json("global-temperature.json")
 .then(function(data){
@@ -10,9 +13,11 @@ d3.json("global-temperature.json")
 	main(dataset);
 });
 
+/*
 const width = 1400;
 const height = 500;
-var svg;
+*/
+//var svg;
 var xScale;
 var yScale;
 var baseTemp = [2.8, 3.9, 5.0, 6.1, 7.2, 8.3, 9.5, 10.6, 11.7, 12.8];
@@ -21,6 +26,29 @@ var heatGroup;
 var threshold;
 var tooltipDiv;
 
+function main(dataset){
+	//makeSVG();
+	makeXAxis(dataset);
+	makeYAxis();
+	makeAxisLabels();
+	
+	threshold = d3.scaleThreshold()
+	.domain(baseTemp) //10
+	.range(legendColors);
+
+	heatGroup = svg.append("g");
+
+	makeHeatGroup(dataset);
+
+	makeToolTip();
+
+	makeLegend(dataset);	
+	makeVarianceScaleLabel();
+
+	makeTitle();
+}
+
+/*
 function makeSVG(){
 	svg = d3.select("#root")
 	.append("svg")
@@ -29,11 +57,10 @@ function makeSVG(){
 	.attr("style", "background-color: lightgrey;");
 
 }
+*/
 
+/*
 function makeXAxis(dataset){
-	/*
-	X Axis, works, commented to debug Y Axis
-	*/
 	//var minYear = d3.min(dataset, (d,i) => dataset[i]['year']);
 	var minYear = d3.min(dataset, (d) => d.year);
 
@@ -57,6 +84,7 @@ function makeXAxis(dataset){
 	.attr("transform", "translate(50, 400)")
 	.call(xAxis);	
 }
+*/
 
 function makeYAxis(){
 	//var yScale = d3.scaleTime()
@@ -249,16 +277,19 @@ function makeLegend(dataset){
 }
 
 function makeHeatGroup(dataset){
+	console.log("in makeHeatGroup()");
 	heatGroup.selectAll("rect")
 	.data(dataset)
 	.enter()
 	.append("rect")
 	.attr("x", function(d,i){
 		//+50 makes the rects start to right of Y axis
-		return xScale(d.year) + 51 + "px";
+		//return xScale(d.year) + 51 + "px";
+		getXCoord(d);
 	})
 	.attr("y", function(d, i){
 		return  yScale(new Date("2019-" + d.month + "-01")) + "px";
+		//getYCoord(d);
 	})
 	.attr("width", "4px")
 	.attr("height", "28px ")
@@ -274,24 +305,4 @@ function makeHeatGroup(dataset){
 
 }
 
-function main(dataset){
-	makeSVG();
-	makeXAxis(dataset);
-	makeYAxis();
-	makeAxisLabels();
-	
-	threshold = d3.scaleThreshold()
-	.domain(baseTemp) //10
-	.range(legendColors);
-
-	heatGroup = svg.append("g");
-
-	makeHeatGroup(dataset);
-
-	makeToolTip();
-
-	makeLegend(dataset);	
-
-	makeTitle();
-}
 
