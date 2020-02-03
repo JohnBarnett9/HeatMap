@@ -49,9 +49,13 @@ function makeToolTip(){
 function makeHeatGroup(
 	dataset,
 	heatGroup,
-	threshold,
-	tooltipDiv
+	tooltipDiv,
+	legendColors
 ){
+	var baseTemp = [2.8, 3.9, 5.0, 6.1, 7.2, 8.3, 9.5, 10.6, 11.7, 12.8];
+	var threshold = d3.scaleThreshold()
+	.domain(baseTemp) //10
+	.range(legendColors);
 	//console.log("in makeHeatGroup() tooltipDiv=");
 	//console.dir(tooltipDiv);
 	//console.log("in makeHeatGroup()");

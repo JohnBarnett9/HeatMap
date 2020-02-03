@@ -3,7 +3,6 @@
 function makeLegend(
 	dataset,
 	svg,
-	baseTemp,
 	legendColors
 ){
 	//console.log("legendColors");
@@ -46,7 +45,7 @@ function makeLegend(
 	.range(['red', '#ddd', 'blue'])
 	.interpolate(d3.interpolateHcl);
 
-	var myData = baseTemp; //[-10, - -5, 0, 5, 10];
+	//var myData = baseTemp; //[-10, - -5, 0, 5, 10];
 	var legendGroup = svg.append("g");
 
 

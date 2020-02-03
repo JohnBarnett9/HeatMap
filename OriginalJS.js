@@ -15,10 +15,10 @@ const width = 1400;
 const height = 500;
 
 var svg;
-var baseTemp = [2.8, 3.9, 5.0, 6.1, 7.2, 8.3, 9.5, 10.6, 11.7, 12.8];
+
 var legendColors = d3.schemeBlues[5].reverse().concat(d3.schemeReds[6]);
 var heatGroup;
-var threshold;
+//var threshold;
 
 function main(dataset){
 	makeSVG();
@@ -26,14 +26,12 @@ function main(dataset){
 	makeYAxis(svg);
 	makeAxisLabels(svg, width, height);
 
-	threshold = d3.scaleThreshold()
-	.domain(baseTemp) //10
-	.range(legendColors);
+
 
 	heatGroup = svg.append("g");
 	var tooltipDiv = makeToolTip();
-	makeHeatGroup(dataset, heatGroup, threshold, tooltipDiv);	
-	makeLegend(dataset, svg, baseTemp, legendColors);	
+	makeHeatGroup(dataset, heatGroup, tooltipDiv, legendColors);	
+	makeLegend(dataset, svg, legendColors);	
 	makeVarianceScaleLabel(svg);
 	makeTitle(svg);
 }
