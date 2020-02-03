@@ -1,6 +1,6 @@
 import {makeXAxis, makeYAxis,getXCoord,getYCoord} from './Axis.js';
 import {makeAxisLabels} from './XYAxisLabels.js';
-import {makeLegend, makeVarianceScaleLabel} from './Legend.js';
+import {makeLegend, makeLegendScaleLabel} from './Legend.js';
 import {makeTitle} from './GraphTitle.js';
 import {makeToolTip, makeHeatGroup} from './HeatGroup.js';
 
@@ -27,7 +27,7 @@ function main(dataset){
 	var tooltipDiv = makeToolTip();
 	makeHeatGroup(dataset, svg, tooltipDiv, legendColors);	
 	makeLegend(dataset, svg, legendColors);	
-	makeVarianceScaleLabel(svg);
+	makeLegendScaleLabel(svg);
 	makeTitle(svg);
 }
 

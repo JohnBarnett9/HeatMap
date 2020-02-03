@@ -26,7 +26,7 @@ function makeLegend(
 
 	var varianceAxis = d3.axisBottom(varianceScale).tickFormat(d3.format("d"));
 	svg.append("g")
-	.attr("transform", "translate(50, 420)")
+	.attr("transform", "translate(100, 420)")
 	.call(varianceAxis);
 
 	//base temp axis
@@ -36,7 +36,7 @@ function makeLegend(
 
 	var baseAxis = d3.axisBottom(baseTempScale).tickFormat(d3.format("d"));
 	svg.append("g")
-	.attr("transform", "translate(50, 440)")
+	.attr("transform", "translate(100, 440)")
 	.call(baseAxis);
 
 	//color scale
@@ -55,27 +55,31 @@ function makeLegend(
 	.append("rect")
 	.attr("width", 20)
 	.attr("height", 20)
-	.attr("x", function(d,i){return (i * 20)+ 100 + "px";})
+	.attr("x", function(d,i){return (i * 20)+ 140 + "px";})
 	.attr("y", 470)
 	.attr("fill", function(d){return d;});
 	/*
 	*/
 }
 
-function makeVarianceScaleLabel(svg){
+function makeLegendScaleLabel(svg){
 	//variance scale label
 	svg.append("text")
-	.attr("x", 0)
-	.attr("y", 420)
+	.attr("x", 20)
+	.attr("y", 430)
 	.text("Variance Scale");
 
 	//base temp scale label
 	svg.append("text")
-	.attr("x", 0)
-	.attr("y", 440)
+	.attr("x", 20)
+	.attr("y", 450)
 	.text("Base Temp Scale");
 	
+	svg.append("text")
+	.attr("x", 20)
+	.attr("y", 480)
+	.text("Heat Color Scale");
 }
 
 
-export {makeLegend, makeVarianceScaleLabel};
+export {makeLegend, makeLegendScaleLabel};
