@@ -1,11 +1,8 @@
-//export var svg in OriginalJS.js broke firefox
-//import {svg} from './OriginalJS.js';
-import {svg} from './SVGVariable.js';
 var xScale;
 var yScale;
 
  
-export function makeXAxis(dataset){
+function makeXAxis(dataset,svg){
 	console.log("in makeXAxis()");
 	/*
 	X Axis, works, commented to debug Y Axis
@@ -34,7 +31,7 @@ export function makeXAxis(dataset){
 	.call(xAxis);	
 }
 
-function makeYAxis(){
+function makeYAxis(svg){
 	//var yScale = d3.scaleTime()
 	yScale = d3.scaleTime()
 	.domain([new Date("2019-01-01"), new Date("2019-12-31")])
@@ -49,11 +46,12 @@ function makeYAxis(){
 
 }
 
-export function getXCoord(d){
-	console.dir(xScale);
-	//return xScale(d.year) + 51 + "px";
+function getXCoord(d){
+	return xScale(d.year) + 51 + "px";
 }
 function getYCoord(d){
+
 	return  yScale(new Date("2019-" + d.month + "-01")) + "px";
 }
 
+export {makeXAxis,makeYAxis,getXCoord,getYCoord};

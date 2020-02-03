@@ -1,23 +1,16 @@
-import {hello} from './TestImport.js';
-//import {minYear} from './XYScale.js';
-hello();
-console.log("in OriginalJS.js");
+import {makeXAxis, makeYAxis,getXCoord,getYCoord} from './Axis.js';
 
-import {makeXAxis, getXCoord} from './Axis.js';
-import {width, height, svg} from './SVGVariable.js';
-
-//var dataset = []; //init
 d3.json("global-temperature.json")
 .then(function(data){
 	var dataset = data.monthlyVariance;
 	main(dataset);
 });
 
-/*
+/**/
 const width = 1400;
 const height = 500;
-*/
-//var svg;
+
+var svg;
 var xScale;
 var yScale;
 var baseTemp = [2.8, 3.9, 5.0, 6.1, 7.2, 8.3, 9.5, 10.6, 11.7, 12.8];
@@ -27,11 +20,11 @@ var threshold;
 var tooltipDiv;
 
 function main(dataset){
-	//makeSVG();
-	makeXAxis(dataset);
-	makeYAxis();
+	makeSVG();
+	makeXAxis(dataset,svg);
+	makeYAxis(svg);
 	makeAxisLabels();
-	
+
 	threshold = d3.scaleThreshold()
 	.domain(baseTemp) //10
 	.range(legendColors);
@@ -48,7 +41,7 @@ function main(dataset){
 	makeTitle();
 }
 
-/*
+
 function makeSVG(){
 	svg = d3.select("#root")
 	.append("svg")
@@ -57,7 +50,6 @@ function makeSVG(){
 	.attr("style", "background-color: lightgrey;");
 
 }
-*/
 
 /*
 function makeXAxis(dataset){
@@ -84,7 +76,7 @@ function makeXAxis(dataset){
 	.attr("transform", "translate(50, 400)")
 	.call(xAxis);	
 }
-*/
+
 
 function makeYAxis(){
 	//var yScale = d3.scaleTime()
@@ -100,7 +92,7 @@ function makeYAxis(){
 	.call(yAxis);
 
 }
-
+*/
 function makeAxisLabels(){
 	//X Axis Label
 	svg.append("text")
@@ -284,12 +276,10 @@ function makeHeatGroup(dataset){
 	.append("rect")
 	.attr("x", function(d,i){
 		//+50 makes the rects start to right of Y axis
-		//return xScale(d.year) + 51 + "px";
-		getXCoord(d);
+		return getXCoord(d);
 	})
 	.attr("y", function(d, i){
-		return  yScale(new Date("2019-" + d.month + "-01")) + "px";
-		//getYCoord(d);
+		return getYCoord(d);
 	})
 	.attr("width", "4px")
 	.attr("height", "28px ")
