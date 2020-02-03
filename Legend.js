@@ -25,7 +25,37 @@ function makeLegend(
 	.range([50, 250]);
 
 	var varianceAxis = d3.axisBottom(varianceScale).tickFormat(d3.format("d"));
-	svg.append("g")
+
+	//group to hold legend scales and labels
+	var legendGroup = svg.append("g")
+	.on("mouseover", function(d){
+		//console.dir(d);
+
+		//assume 478 as top of color square
+		//assume 497 as bottom of color square
+		var legendLine = d3.select("#lineline");
+		legendLine
+		.attr("x1", function(d){return d3.event.pageX + "px";})
+		.attr("x2", function(d){return d3.event.pageX + "px";})
+		.attr("y1", function(d){
+			//console.log("pageY=");
+			//console.dir(d3.event.pageY);
+			return 420 + "px";
+		})
+		.attr("y2", function(d){
+			//return 497 - d3.event.pageY + "px";
+			return 490 + "px";
+		})
+		.style("opacity", 1);
+	})
+	.on("mouseout", function(d){
+		var legendLine = d3.select("#lineline");
+		legendLine.style("opacity", 0);		
+	});
+
+	//svg.append("g") works, but varianceAxis is in legendGroup now
+	//svg.append("g")
+	legendGroup.append("g")
 	.attr("transform", "translate(100, 420)")
 	.call(varianceAxis);
 
@@ -35,7 +65,11 @@ function makeLegend(
 	.range([50, 250]);
 
 	var baseAxis = d3.axisBottom(baseTempScale).tickFormat(d3.format("d"));
-	svg.append("g")
+
+
+	
+	//svg.append("g") works, but baseAxis is in legendGroup now
+	legendGroup.append("g")
 	.attr("transform", "translate(100, 440)")
 	.call(baseAxis);
 
@@ -45,8 +79,6 @@ function makeLegend(
 	.range(['red', '#ddd', 'blue'])
 	.interpolate(d3.interpolateHcl);
 
-	//group to hold legend scales and labels
-	var legendGroup = svg.append("g");
 
 
 	legendGroup.selectAll("rect")
@@ -62,31 +94,8 @@ function makeLegend(
 		return (i * 20)+ 140 + "px";
 	})
 	.attr("y", 470)
-	.attr("fill", function(d){return d;})
-	.on("mouseover", function(d){
-		//console.dir(d);
+	.attr("fill", function(d){return d;});
 
-		//assume 478 as top of color square
-		//assume 497 as bottom of color square
-		var legendLine = d3.select("#lineline");
-		legendLine
-		.attr("x1", function(d){return d3.event.pageX + "px";})
-		.attr("x2", function(d){return d3.event.pageX + "px";})
-		.attr("y1", function(d){
-			console.log("pageY=");
-			console.dir(d3.event.pageY);
-			return 420 + "px";
-		})
-		.attr("y2", function(d){
-			//return 497 - d3.event.pageY + "px";
-			return 490 + "px";
-		})
-		.style("opacity", 1);
-	})
-	.on("mouseout", function(d){
-		var legendLine = d3.select("#lineline");
-		legendLine.style("opacity", 0);		
-	});
 	/*
 	*/
 
