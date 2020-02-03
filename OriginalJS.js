@@ -31,31 +31,6 @@ function main(dataset){
 	makeTitle(svg);
 }
 
-
-
-function main(dataset){
-	//makeSVG();
-	svgStuff.makeSVG();
-	makeXAxis(dataset);
-	makeYAxis();
-	makeAxisLabels();
-	
-	threshold = d3.scaleThreshold()
-	.domain(baseTemp) //10
-	.range(legendColors);
-
-	heatGroup = svg.append("g");
-
-	makeHeatGroup(dataset);
-
-	makeToolTip();
-
-	makeLegend(dataset);	
-
-	makeTitle();
-}
-
-/*
 function makeSVG(){
 	svg = d3.select("#root")
 	.append("svg")
