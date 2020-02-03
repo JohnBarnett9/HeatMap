@@ -15,8 +15,6 @@ const width = 1400;
 const height = 500;
 
 var svg;
-//var xScale;
-//var yScale;
 var baseTemp = [2.8, 3.9, 5.0, 6.1, 7.2, 8.3, 9.5, 10.6, 11.7, 12.8];
 var legendColors = d3.schemeBlues[5].reverse().concat(d3.schemeReds[6]);
 var heatGroup;
