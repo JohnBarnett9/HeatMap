@@ -1,4 +1,8 @@
 import {makeXAxis, makeYAxis,getXCoord,getYCoord} from './Axis.js';
+import {makeAxisLabels} from './XYAxisLabels.js';
+import {makeLegend, makeVarianceScaleLabel} from './Legend.js';
+import {makeTitle} from './GraphTitle.js';
+import {makeToolTip, makeHeatGroup} from './HeatGroup.js';
 
 d3.json("global-temperature.json")
 .then(function(data){
@@ -11,19 +15,22 @@ const width = 1400;
 const height = 500;
 
 var svg;
-var xScale;
-var yScale;
+//var xScale;
+//var yScale;
 var baseTemp = [2.8, 3.9, 5.0, 6.1, 7.2, 8.3, 9.5, 10.6, 11.7, 12.8];
 var legendColors = d3.schemeBlues[5].reverse().concat(d3.schemeReds[6]);
 var heatGroup;
 var threshold;
-var tooltipDiv;
+//var tooltipDiv = null;
+Object.toType = function(obj) {
+  return ({}).toString.call(obj).match(/\s([a-z|A-Z]+)/)[1].toLowerCase();
+}
 
 function main(dataset){
 	makeSVG();
 	makeXAxis(dataset,svg);
 	makeYAxis(svg);
-	makeAxisLabels();
+	makeAxisLabels(svg, width, height);
 
 	threshold = d3.scaleThreshold()
 	.domain(baseTemp) //10
@@ -31,14 +38,21 @@ function main(dataset){
 
 	heatGroup = svg.append("g");
 
-	makeHeatGroup(dataset);
+	var tooltipDiv = makeToolTip();
+	console.dir(Object.toType(tooltipDiv));
 
-	makeToolTip();
+	//makeToolTip();
+	//console.log("in main() tooltipDiv=");
+	//console.dir(tooltipDiv);
+	makeHeatGroup(dataset, heatGroup, threshold, tooltipDiv);
 
-	makeLegend(dataset);	
-	makeVarianceScaleLabel();
+	
+	//console.log("before makeLegendCall() legendColors=");
+	//console.dir(legendColors);
+	makeLegend(dataset, svg, baseTemp, legendColors);	
+	makeVarianceScaleLabel(svg);
 
-	makeTitle();
+	makeTitle(svg);
 }
 
 
@@ -93,6 +107,7 @@ function makeYAxis(){
 
 }
 */
+/*
 function makeAxisLabels(){
 	//X Axis Label
 	svg.append("text")
@@ -100,9 +115,7 @@ function makeAxisLabels(){
 	.attr("y", height - 20)
 	.text("Year");
 
-	/*
 	//Y Axis Label
-	*/
 	svg.append("text")
 	.attr("x", 0)
 	.attr("y", 0)
@@ -110,7 +123,9 @@ function makeAxisLabels(){
 	.text("Month");
 
 }
+*/
 
+/*
 function makeVarianceScaleLabel(){
 	//variance scale label
 	svg.append("text")
@@ -125,8 +140,9 @@ function makeVarianceScaleLabel(){
 	.text("Base Temp Scale");
 	
 }
+*/
 
-
+/*
 function makeTitle(){
 	//Title of Heat Map
 	svg.append("text")
@@ -142,7 +158,9 @@ function makeTitle(){
 	.style("font-size", "15px");
 
 }
+*/
 
+/*
 function mouseOverCallback(d){
 		var tooltipDiv = d3.select("#myTooltip")
 
@@ -171,7 +189,8 @@ function mouseOutCallback(d){
 		.duration(250)
 		.style("opacity", 0);
 }
-
+*/
+/*
 function makeToolTip(){
 	//tooltip
 	tooltipDiv = d3.select("body")
@@ -181,42 +200,25 @@ function makeToolTip(){
 	.style("opacity", 0);
 
 }
-
+*/
+/*
 function makeLegend(dataset){
 	//Color Legend
 
-	//sort variance values and take leftmost
-	/**/
 	var variances = dataset.map(function(d){
 		return d.variance; //returns positive numbers also
-		//if(d.variance < 0){ return d.variance; }
 	});
-	//console.dir(variances);
-
 
 	//neg number furthest from 0, -6.976
 	var minNegVariance = Math.min(...variances);
-	//console.log("minNegVariance=");
-	//console.dir(minNegVariance);
-
+	
 	//5.228
 	var maxPosVariance = Math.max(...variances);
-	//console.log("maxPosVariance=");
-	//console.dir(maxPosVariance);
 
-
-	//variances.sort();
-	//console.dir(variances);
-
-	//var maxNegVariance =
-	//console.dir();
-	//var minBaseTemp = 8.66-maxNegVariance;
-	//console.dir(minBaseTemp);
 	//variance scale
 	var varianceScale = d3.scaleLinear()
 	.domain([minNegVariance, maxPosVariance])
 	.range([50, 250]);
-
 
 	var varianceAxis = d3.axisBottom(varianceScale).tickFormat(d3.format("d"));
 	svg.append("g")
@@ -225,8 +227,6 @@ function makeLegend(dataset){
 
 	//base temp axis
 	var baseTempScale = d3.scaleLinear()
-	//.domain([8.66-minNegVariance, 8.66+maxPosVariance])
-	//.domain([8.66+minNegVariance, 8.66+maxPosVariance])
 	.domain([7, 13])
 	.range([50, 250]);
 
@@ -240,34 +240,22 @@ function makeLegend(dataset){
 	.domain([-10, 0, 10])
 	.range(['red', '#ddd', 'blue'])
 	.interpolate(d3.interpolateHcl);
-	//.interpolator(d3.interpolateRainbow());
-	//colorScale(-10);
 
-
-	/*
-	var colorAxis = d3.axisBottom(colorScale);
-	svg.append("g")
-	.attr("transform", "translate(50, 460)")
-	.call(colorAxis);
-	*/
 	var myData = baseTemp; //[-10, - -5, 0, 5, 10];
 	var legendGroup = svg.append("g");
-	//console.dir(legendColors);
 
-	//svg.selectAll("rect")
 	legendGroup.selectAll("rect")
 	.data(legendColors)
 	.enter()
 	.append("rect")
 	.attr("width", 20)
 	.attr("height", 20)
-	//.attr("r", "10")
 	.attr("x", function(d,i){return (i * 20)+ 100 + "px";})
 	.attr("y", 470)
 	.attr("fill", function(d){return d;});
-
 }
-
+*/
+/*
 function makeHeatGroup(dataset){
 	console.log("in makeHeatGroup()");
 	heatGroup.selectAll("rect")
@@ -294,5 +282,5 @@ function makeHeatGroup(dataset){
 	});
 
 }
-
+*/
 

@@ -3,7 +3,7 @@ var yScale;
 
  
 function makeXAxis(dataset,svg){
-	console.log("in makeXAxis()");
+	//console.log("in makeXAxis()");
 	/*
 	X Axis, works, commented to debug Y Axis
 	*/
