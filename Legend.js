@@ -66,12 +66,21 @@ function makeLegend(
 	.on("mouseover", function(d){
 		//console.dir(d);
 
+		//assume 478 as top of color square
+		//assume 497 as bottom of color square
 		var legendLine = d3.select("#lineline");
 		legendLine
 		.attr("x1", function(d){return d3.event.pageX + "px";})
 		.attr("x2", function(d){return d3.event.pageX + "px";})
-		.attr("y1", function(d){return d3.event.pageY + "px";})
-		.attr("y2", function(d){return d3.event.pageY + 50 + "px";})		
+		.attr("y1", function(d){
+			console.log("pageY=");
+			console.dir(d3.event.pageY);
+			return 420 + "px";
+		})
+		.attr("y2", function(d){
+			//return 497 - d3.event.pageY + "px";
+			return 490 + "px";
+		})
 		.style("opacity", 1);
 	})
 	.on("mouseout", function(d){
