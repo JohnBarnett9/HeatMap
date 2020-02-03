@@ -45,7 +45,7 @@ function makeLegend(
 	.range(['red', '#ddd', 'blue'])
 	.interpolate(d3.interpolateHcl);
 
-	//var myData = baseTemp; //[-10, - -5, 0, 5, 10];
+	//group to hold legend scales and labels
 	var legendGroup = svg.append("g");
 
 
@@ -55,11 +55,63 @@ function makeLegend(
 	.append("rect")
 	.attr("width", 20)
 	.attr("height", 20)
-	.attr("x", function(d,i){return (i * 20)+ 140 + "px";})
+	.attr("x", function(d,i){
+		
+
+		//console.dir((i * 20)+ 140 + "px");
+		return (i * 20)+ 140 + "px";
+	})
 	.attr("y", 470)
-	.attr("fill", function(d){return d;});
+	.attr("fill", function(d){return d;})
+	.on("mouseover", function(d){
+		//console.dir(d);
+
+		var legendLine = d3.select("#lineline");
+		legendLine
+		.attr("x1", function(d){return d3.event.pageX + "px";})
+		.attr("x2", function(d){return d3.event.pageX + "px";})
+		.attr("y1", function(d){return d3.event.pageY + "px";})
+		.attr("y2", function(d){return d3.event.pageY + 50 + "px";})		
+		.style("opacity", 1);
+	})
+	.on("mouseout", function(d){
+		var legendLine = d3.select("#lineline");
+		legendLine.style("opacity", 0);		
+	});
 	/*
 	*/
+
+	/*
+	.attr("x1", function(d){return d3.event.pageX + "px";})
+	.attr("x2", function(d){return d3.event.pageX + "px";})
+	.attr("y1", function(d){return d3.event.pageY + "px";})
+	.attr("y2", function(d){return d3.event.pageY + 50 + "px";})
+	*/
+	/*
+	svg.append("line")
+	.attr("x1", 50)
+	.attr("x2", 50)
+	.attr("y1", 50)
+	.attr("y2", 100)
+	.attr("id", "lineline")
+	.style("stroke-width", 5)
+	.style("stroke", "black");
+	*/
+
+	var legendScalesLine = 
+	//d3.select("body")
+	svg
+	.append("line")
+	.attr("x1", 50)
+	.attr("x2", 50)
+	.attr("y1", 50)
+	.attr("y2", 100)
+	.attr("id", "lineline")
+	.style("stroke-width", 5)
+	.style("stroke", "black")
+	.style("opacity", 0);
+;
+
 }
 
 function makeLegendScaleLabel(svg){
