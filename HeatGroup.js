@@ -1,5 +1,12 @@
+/*
+Purpose of file:
+Render the rectangles of the Heat Map.
+Render the tooltip, which inclues the mouseover and mouseout.
+*/
+
 import {getXCoord,getYCoord} from './Axis.js';
 
+//Render cursor tooltip when mouseover rect.
 function mouseOverCallback(d){
 	var tooltipDiv = d3.select("#myTooltip")
 
@@ -30,6 +37,7 @@ function mouseOverCallback(d){
 	.style("top", d3.event.pageY + "px");
 }
 
+//Tooltip disappears when mouseout rect.
 function mouseOutCallback(d,tooltipDiv){
 	tooltipDiv
 	.transition()
@@ -37,8 +45,8 @@ function mouseOutCallback(d,tooltipDiv){
 	.style("opacity", 0);
 }
 
+//Render tooltip to DOM and make it invisible initially.
 function makeToolTip(){
-	//tooltip
 	var tooltipDiv = d3.select("body")
 	.append("div")
 	.attr("id", "myTooltip")
@@ -48,6 +56,10 @@ function makeToolTip(){
 	return tooltipDiv;
 }
 
+/*
+Render all rectangles of the Heat Map.
+Threshold determines color.
+*/
 function makeHeatGroup(
 	dataset,
 	svg,

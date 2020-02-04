@@ -1,3 +1,8 @@
+/*
+Purpose of file:
+Render the labels for the X and Y Axis.
+*/
+
 function makeAxisLabels(svg, width, height){
 	//X Axis Label
 	svg.append("text")

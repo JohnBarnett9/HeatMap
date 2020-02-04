@@ -1,3 +1,8 @@
+/*
+Purpose of file:
+Render the tile of the Heat Map.
+*/
+
 function makeTitle(svg){
 	//Title of Heat Map
 	svg.append("text")
