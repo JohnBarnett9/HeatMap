@@ -1,45 +1,40 @@
-//seems to work
-//import {makeXAxis, makeYAxis,getXCoord,getYCoord} from './Axis.js';
-
-//seems to work
 import {getXCoord,getYCoord} from './Axis.js';
 
 function mouseOverCallback(d){
-		var tooltipDiv = d3.select("#myTooltip")
+	var tooltipDiv = d3.select("#myTooltip")
 
-		tooltipDiv.transition()
-		.duration(250)
-		.style("opacity", 1);
+	tooltipDiv.transition()
+	.duration(250)
+	.style("opacity", 1);
 
-		var monthAbbrev = d3.timeFormat("%B");
-		var myDate = new Date(d.year,d.month-1, 1);
+	var monthAbbrev = d3.timeFormat("%B");
+	var myDate = new Date(d.year,d.month-1, 1);
 
-		//round 2 decimal places
-		var baseTemp =
-		(Math.round((8.66 - d.variance) * 100) / 100).toFixed(2);
+	//round 2 decimal places
+	var baseTemp =
+	(Math.round((8.66 - d.variance) * 100) / 100).toFixed(2);
 
-		//round 2 decimal places
-		var variance =
-		(Math.round((d.variance) * 100) / 100).toFixed(2);
+	//round 2 decimal places
+	var variance =
+	(Math.round((d.variance) * 100) / 100).toFixed(2);
 
-		var tooltipData = 
-		d.year + " " + 
-		monthAbbrev(myDate)
-		+ "<br>Base Temp: " + baseTemp
-		+ "<br>Variance: " + variance;
+	var tooltipData = 
+	d.year + " " + 
+	monthAbbrev(myDate)
+	+ "<br>Base Temp: " + baseTemp
+	+ "<br>Variance: " + variance;
 
-		tooltipDiv
-		.html(tooltipData)
-		.style("left", d3.event.pageX + "px")
-		.style("top", d3.event.pageY + "px");					
-
+	tooltipDiv
+	.html(tooltipData)
+	.style("left", d3.event.pageX + "px")
+	.style("top", d3.event.pageY + "px");
 }
 
 function mouseOutCallback(d,tooltipDiv){
-		tooltipDiv
-		.transition()
-		.duration(250)
-		.style("opacity", 0);
+	tooltipDiv
+	.transition()
+	.duration(250)
+	.style("opacity", 0);
 }
 
 function makeToolTip(){
@@ -50,8 +45,6 @@ function makeToolTip(){
 	.text("asdf")
 	.style("opacity", 0);
 
-	//console.log("in makeToolTip() tooltipDiv=");
-	//console.dir(tooltipDiv);
 	return tooltipDiv;
 }
 
@@ -67,9 +60,7 @@ function makeHeatGroup(
 	var threshold = d3.scaleThreshold()
 	.domain(baseTemp) //10
 	.range(legendColors);
-	//console.log("in makeHeatGroup() tooltipDiv=");
-	//console.dir(tooltipDiv);
-	//console.log("in makeHeatGroup()");
+
 	heatGroup.selectAll("rect")
 	.data(dataset)
 	.enter()

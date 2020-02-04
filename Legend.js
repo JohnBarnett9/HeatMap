@@ -1,14 +1,9 @@
-//var legendColors = d3.schemeBlues[5].reverse().concat(d3.schemeReds[6]);
-
 function makeLegend(
 	dataset,
 	svg,
 	legendColors
 ){
-	//console.log("legendColors");
-	//console.dir(legendColors);
 	//Color Legend
-
 	var variances = dataset.map(function(d){
 		return d.variance; //returns positive numbers also
 	});
@@ -29,21 +24,14 @@ function makeLegend(
 	//group to hold legend scales and labels
 	var legendGroup = svg.append("g")
 	.on("mouseover", function(d){
-		//console.dir(d);
-
-		//assume 478 as top of color square
-		//assume 497 as bottom of color square
 		var legendLine = d3.select("#lineline");
 		legendLine
 		.attr("x1", function(d){return d3.event.pageX + "px";})
 		.attr("x2", function(d){return d3.event.pageX + "px";})
 		.attr("y1", function(d){
-			//console.log("pageY=");
-			//console.dir(d3.event.pageY);
 			return 420 + "px";
 		})
 		.attr("y2", function(d){
-			//return 497 - d3.event.pageY + "px";
 			return 490 + "px";
 		})
 		.style("opacity", 1);
@@ -53,8 +41,6 @@ function makeLegend(
 		legendLine.style("opacity", 0);		
 	});
 
-	//svg.append("g") works, but varianceAxis is in legendGroup now
-	//svg.append("g")
 	legendGroup.append("g")
 	.attr("transform", "translate(100, 420)")
 	.call(varianceAxis);
@@ -65,10 +51,7 @@ function makeLegend(
 	.range([50, 250]);
 
 	var baseAxis = d3.axisBottom(baseTempScale).tickFormat(d3.format("d"));
-
-
 	
-	//svg.append("g") works, but baseAxis is in legendGroup now
 	legendGroup.append("g")
 	.attr("transform", "translate(100, 440)")
 	.call(baseAxis);
@@ -79,8 +62,6 @@ function makeLegend(
 	.range(['red', '#ddd', 'blue'])
 	.interpolate(d3.interpolateHcl);
 
-
-
 	legendGroup.selectAll("rect")
 	.data(legendColors)
 	.enter()
@@ -88,9 +69,6 @@ function makeLegend(
 	.attr("width", 20)
 	.attr("height", 20)
 	.attr("x", function(d,i){
-		
-
-		//console.dir((i * 20)+ 140 + "px");
 		return (i * 20)+ 140 + "px";
 	})
 	.attr("y", 470)
@@ -100,35 +78,11 @@ function makeLegend(
 		blackedOut.forEach(element => element.setAttribute("opacity", .4));
 	})
 	.on("mouseout", function(d){
-		//var blackedOut = document.querySelectorAll('#allrects :not([fill="#a50f15"])');
 		var blackedOut = document.querySelectorAll("#allrects :not([fill="+CSS.escape(d)+"])");
-		//blackedOut.forEach(element => element.setAttribute("fill", "black"));
 		blackedOut.forEach(element => element.setAttribute("opacity", 1));
-
 	});
 
-	/*
-	*/
-
-	/*
-	.attr("x1", function(d){return d3.event.pageX + "px";})
-	.attr("x2", function(d){return d3.event.pageX + "px";})
-	.attr("y1", function(d){return d3.event.pageY + "px";})
-	.attr("y2", function(d){return d3.event.pageY + 50 + "px";})
-	*/
-	/*
-	svg.append("line")
-	.attr("x1", 50)
-	.attr("x2", 50)
-	.attr("y1", 50)
-	.attr("y2", 100)
-	.attr("id", "lineline")
-	.style("stroke-width", 5)
-	.style("stroke", "black");
-	*/
-
-	var legendScalesLine = 
-	//d3.select("body")
+	var legendScalesLine =
 	svg
 	.append("line")
 	.attr("x1", 50)
@@ -139,8 +93,6 @@ function makeLegend(
 	.style("stroke-width", 1)
 	.style("stroke", "black")
 	.style("opacity", 0);
-;
-
 }
 
 function makeLegendScaleLabel(svg){
@@ -161,6 +113,5 @@ function makeLegendScaleLabel(svg){
 	.attr("y", 480)
 	.text("Heat Color Scale");
 }
-
 
 export {makeLegend, makeLegendScaleLabel};
