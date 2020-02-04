@@ -52,7 +52,8 @@ function makeHeatGroup(
 	tooltipDiv,
 	legendColors
 ){
-	var heatGroup = svg.append("g");
+	var heatGroup = svg.append("g")
+	.attr("id", "allrects");
 	var baseTemp = [2.8, 3.9, 5.0, 6.1, 7.2, 8.3, 9.5, 10.6, 11.7, 12.8];
 	var threshold = d3.scaleThreshold()
 	.domain(baseTemp) //10
