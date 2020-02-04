@@ -43,6 +43,6 @@ function makeSVG(){
 	.append("svg")
 	.attr("width", width)
 	.attr("height", height)
-	.attr("style", "background-color: lightgrey;");
+	.attr("style", "background-color: white;");
 
 }

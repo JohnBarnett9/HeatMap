@@ -136,7 +136,7 @@ function makeLegend(
 	.attr("y1", 50)
 	.attr("y2", 100)
 	.attr("id", "lineline")
-	.style("stroke-width", 5)
+	.style("stroke-width", 1)
 	.style("stroke", "black")
 	.style("opacity", 0);
 ;
