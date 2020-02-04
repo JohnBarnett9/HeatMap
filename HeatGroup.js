@@ -13,11 +13,20 @@ function mouseOverCallback(d){
 
 		var monthAbbrev = d3.timeFormat("%B");
 		var myDate = new Date(d.year,d.month-1, 1);
+
+		//round 2 decimal places
+		var baseTemp =
+		(Math.round((8.66 - d.variance) * 100) / 100).toFixed(2);
+
+		//round 2 decimal places
+		var variance =
+		(Math.round((d.variance) * 100) / 100).toFixed(2);
+
 		var tooltipData = 
 		d.year + " " + 
 		monthAbbrev(myDate)
-		+ "<br>Base Temp: " + (8.66 - d.variance)
-		+ "<br>Variance: " + d.variance;
+		+ "<br>Base Temp: " + baseTemp
+		+ "<br>Variance: " + variance;
 
 		tooltipDiv
 		.html(tooltipData)
