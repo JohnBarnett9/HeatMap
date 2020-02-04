@@ -29,7 +29,7 @@ function makeLegend(
 	//group to hold legend scales and labels
 	var legendGroup = svg.append("g")
 	.on("mouseover", function(d){
-		console.dir(d);
+		//console.dir(d);
 
 		//assume 478 as top of color square
 		//assume 497 as bottom of color square
@@ -96,8 +96,8 @@ function makeLegend(
 	.attr("y", 470)
 	.attr("fill", function(d){return d;})
 	.on("mouseover", function(d){
-		console.log("in rect d=");
-		console.dir(d);
+		//console.log("in rect d=");
+		//console.dir(d);
 
 		/*all rects colored red
 		var allA5 = d3.selectAll("rect")
@@ -109,13 +109,14 @@ function makeLegend(
 		var elemsSnacks = document.querySelectorAll("[fill='#a50f15']");
 		*/
 		//var blackedOut = document.querySelectorAll('#allrects rect:not([fill="#a50f15"])');
-		var blackedOut = document.querySelectorAll('#allrects :not([fill="#a50f15"])');
+		//var blackedOut = document.querySelectorAll('#allrects :not([fill="#a50f15"])');
+		var blackedOut = document.querySelectorAll("#allrects :not([fill="+CSS.escape(d)+"])");
 		//blackedOut.forEach(element => element.setAttribute("fill", "black"));
 		blackedOut.forEach(element => element.setAttribute("opacity", .4));
 		//elemsSnacks.attr("fill", "black");
 
-		console.log("blackedOut=");
-		console.dir(blackedOut);
+		//console.log("blackedOut=");
+		//console.dir(blackedOut);
 		//d3.selectAll("[fill=#a50f15]")
 		//d3.selectAll(".fill")
 		//d3.selectAll("rect")
@@ -123,7 +124,8 @@ function makeLegend(
 		//.attr("fill", "black");
 	})
 	.on("mouseout", function(d){
-		var blackedOut = document.querySelectorAll('#allrects :not([fill="#a50f15"])');
+		//var blackedOut = document.querySelectorAll('#allrects :not([fill="#a50f15"])');
+		var blackedOut = document.querySelectorAll("#allrects :not([fill="+CSS.escape(d)+"])");
 		//blackedOut.forEach(element => element.setAttribute("fill", "black"));
 		blackedOut.forEach(element => element.setAttribute("opacity", 1));
 
