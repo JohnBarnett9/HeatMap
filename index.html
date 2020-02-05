@@ -20,14 +20,33 @@
 	</head>
 	<body>
 		<div id="root"></div>
-		<script src="OriginalJS.js"></script>
-		<h5 style="margin-left: 20px;">Mouse over the colors.</h5>
+		<script src="OriginalJS.js" type="module"></script>
+		<h5 style="margin-left: 20px;"></h5>
 		<div
 		style="
 		width: 750px;
 		height: 400px;
 		overflow-y: scroll;">
-			
+			Mouse over the colors.
+			<p>Heat Map application graphed in D3.js.<br>
+			This project is from <a href="https://www.freecodecamp.org/learn/data-visualization/data-visualization-projects/visualize-data-with-a-heat-map">FreeCodeCamp Project 3</a><br>
+			<a href="github">Source Code</a></p>
+			<h3 id="the-top-few-things-i-learned">The top few things I learned</h3>
+			<p>1<br>
+			I used ES6 modules with export and import to organize the code into separate files.</p>
+			<code>
+			export {makeXAxis,makeYAxis,getXCoord,getYCoord};
+			import {makeXAxis, makeYAxis,getXCoord,getYCoord} from './Axis.js';
+			</code>
+			<p>2<br>
+			Even though I only used Month, I needed the entire Date to place the rectangle in the correct place on the Y Axis.</p>
+			<pre><code>return  yScale(new Date("2019-" + d.month + "-01")) + "px";
+			</code></pre>
+			<p>3<br>
+			Separated selecting the rects in the legend from selecting the rects in the Heat Map.<br>
+			Put each selection in its own group <code>&lt;g&gt;</code>.</p>
+
+
 		</div>
 	</body>
 </html>
